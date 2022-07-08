@@ -1,3 +1,4 @@
+import org.junit.Before
 import org.junit.Test
 import service.WordleService
 import wordle.Dictionary
@@ -8,17 +9,25 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class WordleServiceTest {
+    private val dictionary = Dictionary(listOf("toto", "tata", "titi", "hello", "lol", "abba", "atoe"))
+    private val wordleService = WordleService(dictionary)
+
+    @Before
+    fun init() {
+        wordleService.newGame()
+        wordleService.wordle = Wordle("toto")
+    }
 
     @Test
-    fun testGuess() {
-        val dictionary = Dictionary(listOf("toto", "tata", "titi", "hello", "lol", "abba", "atoe"))
-        val wordleService = WordleService(dictionary)
-        wordleService.newGame()
-        wordleService.game = Wordle("toto")
+    fun testGuessValid() {
         assertTrue(wordleService.isGuessValid("tata"))
         assertFalse(wordleService.isGuessValid("tutu"), "Not in dictionary")
         assertFalse(wordleService.isGuessValid("hello"), "Too long")
         assertFalse(wordleService.isGuessValid("lol"), "Too short")
+    }
+
+    @Test
+    fun testGuesses() {
         val guessTata = wordleService.guess("tata")
         assertFalse(wordleService.hasWon())
         assertEquals(listOf(RIGHT, WRONG, RIGHT, WRONG), guessTata)

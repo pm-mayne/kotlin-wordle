@@ -1,7 +1,7 @@
 package app
 
-import service.WordleService
 import io.DictionaryFileReader
+import service.WordleService
 
 fun main(args: Array<String>) {
     println("Launching Kotlin Wordle")
@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
         val grid = wordleService.getPrettyHistory()
         println(grid)
     }
-    println("Congratulations! The word was indeed ${wordleService.game.target}.")
+    println("Congratulations! The word was indeed ${wordleService.wordle.target}.")
 }
 
 

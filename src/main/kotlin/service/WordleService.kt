@@ -4,33 +4,33 @@ import wordle.Dictionary
 import wordle.Sign
 import wordle.Wordle
 
-data class WordleService(val dictionary: Dictionary, var game: Wordle = Wordle(dictionary.pick())) {
+data class WordleService(private val dictionary: Dictionary, var wordle: Wordle = Wordle(dictionary.pick())) {
 
     private val guessHistory = mutableListOf<String>()
     private var lastGuess = ""
 
     fun newGame(size: Int = 0) {
-        game = Wordle(dictionary.pick(size))
+        wordle = Wordle(dictionary.pick(size))
         guessHistory.removeAll { true }
     }
 
     fun hasWon(): Boolean {
-        return lastGuess == game.target
+        return lastGuess == wordle.target
     }
 
-    fun isGuessValid(guess: String) = game.target.length == guess.length && dictionary.has(guess)
+    fun isGuessValid(guess: String) = wordle.target.length == guess.length && dictionary.has(guess)
 
     fun guess(guess: String): List<Sign> {
-        var signed = game.guess(guess)
-        guessHistory.add(prettySign(guess.toUpperCase(), signed))
+        val signed = wordle.guess(guess)
+        guessHistory.add(toPrettySignedWord(guess.toUpperCase(), signed))
         lastGuess = guess.toLowerCase()
         return signed
     }
 
-    private fun prettySign(guess: String, result: List<Sign>): String =
-        guess.mapIndexed { idx, c -> pretty(c, result[idx]) }.joinToString("")
+    private fun toPrettySignedWord(guess: String, result: List<Sign>): String =
+        guess.mapIndexed { idx, c -> toPrettySignedChar(c, result[idx]) }.joinToString("")
 
-    private fun pretty(c: Char, sign: Sign): String {
+    private fun toPrettySignedChar(c: Char, sign: Sign): String {
         return when (sign) {
             Sign.RIGHT -> "[$c]"
             Sign.WRONG_PLACE -> "($c)"
