@@ -1,7 +1,7 @@
 package app
 
 import service.WordleService
-import wordle.DictionaryFileReader
+import io.DictionaryFileReader
 
 fun main(args: Array<String>) {
     println("Launching Kotlin Wordle")

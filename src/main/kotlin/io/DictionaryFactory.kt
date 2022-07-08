@@ -1,4 +1,6 @@
-package wordle
+package io
+
+import wordle.Dictionary
 
 interface DictionaryFactory {
 
