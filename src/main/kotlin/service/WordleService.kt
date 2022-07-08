@@ -20,10 +20,11 @@ data class WordleService(val dictionary: Dictionary, var game: Wordle = Wordle(d
 
     fun isGuessValid(guess: String) = game.target.length == guess.length && dictionary.has(guess)
 
-    fun guess(guess: String) {
+    fun guess(guess: String): List<Sign> {
         var signed = game.guess(guess)
         guessHistory.add(prettySign(guess.toUpperCase(), signed))
         lastGuess = guess.toLowerCase()
+        return signed
     }
 
     private fun prettySign(guess: String, result: List<Sign>): String =
